@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import ru.kirshov.data.MVIViewModel
 import ru.kirshov.data.states.NavigationState
@@ -28,9 +29,13 @@ fun RootScaffold(
             })
         }
     ) { paddingValues ->
-        Box(modifier = modifier.padding(paddingValues)) {
+        Box(modifier = modifier
+            .padding(paddingValues)
+            .fillMaxSize(), contentAlignment = Alignment.Center) {
             when (state.value.navigationState){
-                NavigationState.Input -> InputScreen()
+                NavigationState.Input -> InputScreen(
+                    inputState = state.value.inputState,
+                onChange = { rootState.dispatch(actions = RootViewActions.InputAction(it))})
                 NavigationState.History -> HistoryScreen()
                 NavigationState.Setting -> SettingScreen()
             }

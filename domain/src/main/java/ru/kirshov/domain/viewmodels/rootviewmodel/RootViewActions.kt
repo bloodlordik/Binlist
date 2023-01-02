@@ -6,4 +6,5 @@ sealed class RootViewActions{
     data class NavAction(
         val action: NavigationActions
     ):RootViewActions()
+    data class InputAction(val newValue:String):RootViewActions()
 }
