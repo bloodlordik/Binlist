@@ -57,6 +57,7 @@ android {
 }
 
 dependencies {
+    api(project(mapOf("path" to ":data")))
     //DI
     implementation("io.insert-koin:koin-core:3.3.2")
     implementation( "io.insert-koin:koin-android:3.3.2")
