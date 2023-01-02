@@ -16,3 +16,4 @@ rootProject.name = "Binlist"
 include(":app")
 include(":Presentation")
 include(":data")
+include(":domain")

@@ -4,22 +4,37 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import ru.kirshov.data.MVIViewModel
+import ru.kirshov.data.states.NavigationState
+import ru.kirshov.domain.viewmodels.rootviewmodel.RootViewActions
+import ru.kirshov.domain.viewmodels.rootviewmodel.RootViewState
 
 @Composable
-fun RootScaffold(modifier: Modifier = Modifier){
-    Scaffold(modifier = modifier.fillMaxSize()) { paddingValues->
-        Box(modifier = modifier.padding(paddingValues)){
-            Text(text = "Scaffold")
+fun RootScaffold(
+    modifier: Modifier = Modifier,
+    rootState: MVIViewModel<RootViewActions, RootViewState>
+) {
+    val state = rootState.state.collectAsState(initial = RootViewState.emptyState())
+    Scaffold(
+        modifier = modifier.fillMaxSize(),
+        bottomBar = {
+            RootBottomBar(selected = { navItem ->
+                rootState.dispatch(
+                    actions = RootViewActions.NavAction(navItem)
+                )
+            })
+        }
+    ) { paddingValues ->
+        Box(modifier = modifier.padding(paddingValues)) {
+            when (state.value.navigationState){
+                NavigationState.Input -> InputScreen()
+                NavigationState.History -> HistoryScreen()
+                NavigationState.Setting -> SettingScreen()
+            }
         }
     }
 }
 
-@Composable
-@Preview
-private fun RootScaffoldPreview(){
-    RootScaffold()
-}
